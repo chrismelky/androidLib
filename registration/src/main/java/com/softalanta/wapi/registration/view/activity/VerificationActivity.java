@@ -136,7 +136,7 @@ public class VerificationActivity extends AppCompatActivity {
     }
 
     private void verificationSuccessFul(){
-        SharedPreferences preferences = this.getSharedPreferences(getApplicationContext().getPackageName(), Context.MODE_PRIVATE);
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences(getApplicationContext().getPackageName(), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor= preferences.edit();
         editor.putString("JWT_TOKEN",verification.getJwtToken());
         editor.putString("USER_ID",verification.getUserId());

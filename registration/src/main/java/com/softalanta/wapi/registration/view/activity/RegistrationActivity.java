@@ -301,7 +301,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     private void registrationSuccessFul() {
-        SharedPreferences preferences = this.getSharedPreferences(getApplicationContext().getPackageName(), Context.MODE_PRIVATE);
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences(getApplicationContext().getPackageName(), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor= preferences.edit();
         editor.putString("PHONE_NUMBER",registration.getPhoneNumber());
         editor.apply();
