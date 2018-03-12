@@ -20,7 +20,8 @@ Include:
  Add  dependence build.gradle
  
  dependencies {
-	        compile 'com.github.chrismelky:androidLib:1.0.0'
+               //Regigtration module
+	        compile 'com.github.chrismelky.androidLib:registration:1.0.0'
 	}
  
  
