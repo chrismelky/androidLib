@@ -316,6 +316,7 @@ public class RegistrationActivity extends AppCompatActivity {
         }
         else {
             String appPackageName =getApplicationContext().getPackageName();
+            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++="+appPackageName);
             Intent mainIntent= getApplicationContext().getPackageManager().getLaunchIntentForPackage(appPackageName);
             if(mainIntent != null) {
                 startActivity(mainIntent);

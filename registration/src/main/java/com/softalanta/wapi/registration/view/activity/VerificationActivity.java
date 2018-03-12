@@ -143,6 +143,7 @@ public class VerificationActivity extends AppCompatActivity {
         editor.apply();
 
         String appPackageName =getApplicationContext().getPackageName();
+        System.out.println("______________________________________="+appPackageName);
         Intent mainIntent= getApplicationContext().getPackageManager().getLaunchIntentForPackage(appPackageName);
         if(mainIntent != null) {
             startActivity(mainIntent);
