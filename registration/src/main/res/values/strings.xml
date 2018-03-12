@@ -21,4 +21,5 @@
     <string name="verify_in_progress">Verifying..</string>
     <string name="invalid_verification_code">Invalid Verification Code</string>
     <string name="enter_6_digit_code">Enter 6-digit code</string>
+    <string name="no_main_intent">Whoops no application launcher activity found</string>
 </resources>

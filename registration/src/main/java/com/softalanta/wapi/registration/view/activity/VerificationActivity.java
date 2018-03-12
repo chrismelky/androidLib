@@ -3,7 +3,9 @@ package com.softalanta.wapi.registration.view.activity;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -134,12 +136,21 @@ public class VerificationActivity extends AppCompatActivity {
     }
 
     private void verificationSuccessFul(){
-        Intent result = new Intent();
-        result.putExtra("jwtToken",verification.getJwtToken());
-        result.putExtra("userId",verification.getUserId());
-        setResult(RESULT_OK, result);
-        finish();
-    }
+        SharedPreferences preferences = this.getSharedPreferences(getApplicationContext().getPackageName(), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor= preferences.edit();
+        editor.putString("JWT_TOKEN",verification.getJwtToken());
+        editor.putString("USER_ID",verification.getUserId());
+        editor.apply();
 
+        String appPackageName =getApplicationContext().getPackageName();
+        Intent mainIntent= getApplicationContext().getPackageManager().getLaunchIntentForPackage(appPackageName);
+        if(mainIntent != null) {
+            startActivity(mainIntent);
+            finish();
+        }else {
+            Toast.makeText(this,"Whoops no application launcher activity found",Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
 }

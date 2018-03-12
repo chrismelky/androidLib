@@ -4,8 +4,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -57,6 +60,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private String registrationUrl;
     private String verificationUrl;
     private String resendSmsUrl;
+    private Boolean smsVerification;
     private Registration registration;
 
     @Override
@@ -67,8 +71,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         registrationUrl = intent.getStringExtra("REGISTRATION_POST_URL");
+        smsVerification = intent.getBooleanExtra("SMS_VERIFICATION",false);
         verificationUrl = intent.getStringExtra("VERIFICATION_POST_URL");
-        resendSmsUrl = intent.getStringExtra("  RESEND_SMS_POST_URL");
+        resendSmsUrl = intent.getStringExtra("RESEND_SMS_POST_URL");
+
         // Hide action bar
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -295,10 +301,31 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     private void registrationSuccessFul() {
-        Intent result = new Intent();
-        result.putExtra("phoneNumber",registration.getPhoneNumber());
-        setResult(RESULT_OK, result);
-        finish();
+        SharedPreferences preferences = this.getSharedPreferences(getApplicationContext().getPackageName(), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor= preferences.edit();
+        editor.putString("PHONE_NUMBER",registration.getPhoneNumber());
+        editor.apply();
+
+        if(smsVerification) {
+            Intent verificationIntent = new Intent(this, VerificationActivity.class);
+            verificationIntent.putExtra("VERIFICATION_POST_URL",verificationUrl);
+            verificationIntent.putExtra("RESEND_SMS_GET_URL",resendSmsUrl);
+            verificationIntent.putExtra("PHONE_NUMBER_TO_VERIFY",registration.getPhoneNumber());
+            startActivity(verificationIntent);
+            finish();
+        }
+        else {
+            String appPackageName =getApplicationContext().getPackageName();
+            Intent mainIntent= getApplicationContext().getPackageManager().getLaunchIntentForPackage(appPackageName);
+            if(mainIntent != null) {
+                startActivity(mainIntent);
+                finish();
+            }else {
+                Toast.makeText(this,"Whoops no application launcher activity found",Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
     }
 
 

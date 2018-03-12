@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="com.softalanta.wapi.MainActivity">
+        <activity  android:exported="true" android:name="com.softalanta.wapi.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
