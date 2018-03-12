@@ -3,6 +3,7 @@ package com.softalanta.wapi.registration.view.viewmodel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.content.Context;
 
 import com.softalanta.wapi.registration.model.Country;
 import com.softalanta.wapi.registration.model.Registration;
@@ -28,17 +29,17 @@ public class RegistrationViewModel extends ViewModel implements Registration.Reg
      *
      * @return List of countries with codes
      */
-    public  LiveData<List<Country>> getCountries(){
+    public  LiveData<List<Country>> getCountries(Context context){
         if(countries ==null){
             countries = new MutableLiveData<>();
-            Country.getCountries(this);
+            Country.getCountries(this,context);
         }
         return  countries;
     }
 
-    public void register(Registration registration){
+    public void register(Registration registration,Context context){
         registrationMutableLiveData.setValue(registration);
-        Registration.register(registration,this);
+        Registration.register(registration,this,context);
     }
 
     public LiveData<Registration> getRegistrationMutableLiveData(){

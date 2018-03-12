@@ -1,5 +1,7 @@
 package com.softalanta.wapi.registration.model;
 
+import android.content.Context;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
@@ -8,7 +10,6 @@ import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.softalanta.wapi.registration.RegistrationModule;
 import com.softalanta.wapi.registration.util.VolleySingletonService;
 
 import org.json.JSONException;
@@ -135,7 +136,7 @@ public class Verification {
         void onVerificationResponse(Verification verification);
     }
 
-    public static void verify(final Verification verification,final VerificationCallback client) {
+    public static void verify(final Verification verification, final VerificationCallback client, final Context context) {
 
         JSONObject object = new JSONObject();
         try {
@@ -202,10 +203,10 @@ public class Verification {
 
 
         };
-        VolleySingletonService.getInstance(RegistrationModule.getAppContext()).addToRequestToQueue(request);
+        VolleySingletonService.getInstance(context).addToRequestToQueue(request);
     }
 
-    public static void resendSms(final Verification verification, final VerificationCallback client) {
+    public static void resendSms(final Verification verification, final VerificationCallback client,Context context) {
 
         JSONObject object = new JSONObject();
         try {
@@ -262,7 +263,7 @@ public class Verification {
                 return  headers;
             }
         };
-        VolleySingletonService.getInstance(RegistrationModule.getAppContext()).addToRequestToQueue(request);
+        VolleySingletonService.getInstance(context).addToRequestToQueue(request);
 
     }
 

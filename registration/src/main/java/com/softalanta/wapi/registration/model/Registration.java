@@ -1,8 +1,7 @@
 package com.softalanta.wapi.registration.model;
 
-import android.content.SharedPreferences;
+import android.content.Context;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
@@ -10,7 +9,6 @@ import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.softalanta.wapi.registration.RegistrationModule;
 import com.softalanta.wapi.registration.util.VolleySingletonService;
 
 import org.json.JSONException;
@@ -124,7 +122,7 @@ public class Registration implements Serializable {
 
     }
 
-    public static void register(final Registration registration , final RegistrationCallback client) {
+    public static void register(final Registration registration , final RegistrationCallback client, final Context context) {
 
         JSONObject object = new JSONObject();
         try {
@@ -177,7 +175,7 @@ public class Registration implements Serializable {
             }
         });
 
-        VolleySingletonService.getInstance(RegistrationModule.getAppContext()).addToRequestToQueue(request);
+        VolleySingletonService.getInstance(context).addToRequestToQueue(request);
 
     }
 

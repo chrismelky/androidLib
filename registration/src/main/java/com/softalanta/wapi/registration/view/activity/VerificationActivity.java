@@ -114,7 +114,7 @@ public class VerificationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 showProgress("Resend Verification..");
                 verification.setStatus(4);
-                verificationViewModel.resendSms(verification);
+                verificationViewModel.resendSms(verification,getApplicationContext());
             }
         });
     }
@@ -130,7 +130,7 @@ public class VerificationActivity extends AppCompatActivity {
 
     private void verify(Verification verification)  {
         showProgress("Verifying..");
-        verificationViewModel.verifyNumber(verification);
+        verificationViewModel.verifyNumber(verification,getApplicationContext());
     }
 
     private void verificationSuccessFul(){

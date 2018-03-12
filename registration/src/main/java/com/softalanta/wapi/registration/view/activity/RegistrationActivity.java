@@ -132,7 +132,7 @@ public class RegistrationActivity extends AppCompatActivity {
         };
 
         /* Get current states and register observer for state changes */
-        registrationViewModel.getCountries().observe(this,countriesObserver);
+        registrationViewModel.getCountries(getApplicationContext()).observe(this,countriesObserver);
         registrationViewModel.getRegistrationMutableLiveData().observe(this,registrationObserver);
 
         /* Show country selection popup on */
@@ -214,7 +214,7 @@ public class RegistrationActivity extends AppCompatActivity {
             registration.setPhoneNumber(phoneNumber);
             registration.setStatus(1);
             showProgressDialog(getString(R.string.please_wait));
-            registrationViewModel.register(registration);
+            registrationViewModel.register(registration,getApplicationContext());
         }
         else {
             Toast.makeText(this,getString(R.string.no_post_url),Toast.LENGTH_SHORT).show();

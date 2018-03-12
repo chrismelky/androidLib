@@ -3,6 +3,8 @@ package com.softalanta.wapi.registration.view.viewmodel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.content.Context;
+
 import com.softalanta.wapi.registration.model.Verification;
 import com.softalanta.wapi.registration.util.SmsReceiver;
 
@@ -45,14 +47,14 @@ public class VerificationViewModel extends ViewModel implements Verification.Ver
         return verificationMutableLiveData;
     }
 
-    public void verifyNumber(Verification verification){
+    public void verifyNumber(Verification verification,Context context){
         verification.setStatus(1);
         verificationMutableLiveData.setValue(verification);
-        Verification.verify(verification,this);
+        Verification.verify(verification,this,context );
     }
 
-    public void resendSms(Verification verification){
-        Verification.resendSms(verification,this);
+    public void resendSms(Verification verification,Context context){
+        Verification.resendSms(verification,this,context);
     }
 
     @Override

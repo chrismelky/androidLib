@@ -1,9 +1,9 @@
 package com.softalanta.wapi.registration.model;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
-import com.softalanta.wapi.registration.RegistrationModule;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -77,30 +77,25 @@ public class Country {
 
     }
 
-    public static void getCountries(CountriesCallbacks _mClient){
+    public static void getCountries(CountriesCallbacks _mClient, Context context){
         mClient = _mClient;
-        new GetCountriesAsync().execute();
+        new GetCountriesAsync().execute(context);
     }
 
     /**
      * Fetch country list on background thread
      */
-    public static class GetCountriesAsync extends AsyncTask<Void ,Integer ,List<Country>> {
-
-//        private CountriesCallbacks client;
-//
-//        private  GetCountriesAsync(CountriesCallbacks client){
-//            this.client = client;
-//        }
+    public static class GetCountriesAsync extends AsyncTask<Context ,Integer ,List<Country>> {
 
         @Override
-        protected List<Country> doInBackground(Void... params) {
+        protected List<Country> doInBackground(Context... contexts) {
 
             Country cou[];
             List<Country> countries =new ArrayList<>();
             InputStream raw = null;
             try {
-                raw = RegistrationModule.getAppContext().getAssets().open("country-codes.json");
+
+                raw = contexts[0].getAssets().open("country-codes.json");
                 Reader is = new BufferedReader(new InputStreamReader(raw, "UTF8"));
                 Gson gson = new Gson();
                 cou =gson.fromJson(is,Country[].class);
