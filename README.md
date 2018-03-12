@@ -1,5 +1,6 @@
 # Android Libaribries
 Include:
 
-# Registration Module using mobile number;
-# Verification Module using SMS
+# Registration Module 
+ Register using mobile number
+ Verify mobile number through SMS
