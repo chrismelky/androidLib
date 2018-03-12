@@ -1,7 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.softalanta.wapi.registration">
-    <application tools:replace="android:name" android:name=".RegistrationModule">
+    <application  android:name=".RegistrationModule">
         <receiver android:name=".util.SmsReceiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
