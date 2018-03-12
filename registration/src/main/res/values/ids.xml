@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="verify_account" type="id">Waiting for automaitic detected SMS</item>
+</resources>

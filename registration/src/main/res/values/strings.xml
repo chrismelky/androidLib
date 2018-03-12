@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Registration</string>
+    <string name="create_account_title">Create Wapi Account</string>
+    <string name="create_account_description">Wapi will send an SMS responseMessage to verify your phone number. Enter your country status and phone number:</string>
+    <string name="select_country">Select Country</string>
+    <string name="btn_next">Next</string>
+    <string name="invalid_number">Invalid phone Number</string>
+    <string name="will_verify">We will verify your number</string>
+    <string name="do_you_what_continue">Do you want to continue</string>
+    <string name="ok">Ok</string>
+    <string name="edit">Edit</string>
+    <string name="please_wait">Please wait</string>
+    <string name="cancel">Cancel</string>
+    <string name="country_icon">Country Icon</string>
+    <string name="registration_title">Verify your phone number</string>
+    <string name="phone_number">phone number</string>
+    <string name="no_post_url">No POST registrationUrl provided to register user</string>
+    <string name="verification_title">Waiting to automatically detect an SMS sent to</string>
+    <string name="btn_verify">Verify</string>
+    <string name="bt_resend_sms">Resend SMS</string>
+    <string name="verify_in_progress">Verifying..</string>
+    <string name="invalid_verification_code">Invalid Verification Code</string>
+    <string name="enter_6_digit_code">Enter 6-digit code</string>
+</resources>
