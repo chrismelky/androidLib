@@ -22,6 +22,15 @@
         <item name="android:background">@drawable/edit_text_bg</item>
     </style>
 
+    <style name="wapiListView">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/wapi_black</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+    </style>
+
     <style name="wapiErrorText">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/wapi_error_text_color</item>
@@ -31,6 +40,7 @@
         <item name="android:padding">15dp</item>
         <item name="android:textSize">14sp</item>
     </style>
+
     <style name="wapiBtn">
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:textColor">@color/wapi_background</item>
@@ -39,8 +49,21 @@
         <item name="android:topRightRadius">4dp</item>
         <item name="android:topLeftRadius">4dp</item>
     </style>
+
     <style name="wapiRegistrationEntries" parent="wapiEditText">
         <item name="android:layout_marginLeft">50dp</item>
         <item name="android:layout_marginRight">50dp</item>
     </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light" />
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

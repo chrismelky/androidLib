@@ -5,4 +5,5 @@
     <color name="wapi_sub_text_color">#000</color>
     <color name="wapi_background">#fAfAfA</color>
     <color name="wapi_error_text_color">#FF0000</color>
+    <color name="wapi_black">#000000</color>
 </resources>

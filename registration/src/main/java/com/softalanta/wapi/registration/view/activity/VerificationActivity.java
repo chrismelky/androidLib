@@ -53,7 +53,6 @@ public class VerificationActivity extends AppCompatActivity {
         verificationUrl = intent.getStringExtra("VERIFICATION_POST_URL");
 
         initializeVariables();
-        initializeHandlers();
 
     }
 
@@ -72,86 +71,5 @@ public class VerificationActivity extends AppCompatActivity {
         verificationViewModel = ViewModelProviders.of(this).get(VerificationViewModel.class);
     }
 
-
-    private void initializeHandlers(){
-        Observer<Verification> verificationObserver = new Observer<Verification>() {
-            @Override
-            public void onChanged(@Nullable Verification _verification) {
-                /* set verification state */
-                verification = _verification;
-                if(verification.getStatus() == 3){
-                    nDialog.dismiss();
-                    verificationSuccessFul();
-                }
-                else if(verification.getStatus() == 2){
-                    nDialog.dismiss();
-                    Toast.makeText(VerificationActivity.this,verification.getMessage(),Toast.LENGTH_SHORT).show();
-                }
-                else if(verification.getStatus() == 5){
-                    nDialog.dismiss();
-                    Toast.makeText(VerificationActivity.this,verification.getMessage(),Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
-
-        verificationViewModel.getVerification(phoneNumber,verificationUrl,resendSmsUrl).observe(this,verificationObserver);
-
-        verifyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(null != verificationCode.getText()){
-                    System.out.println(Integer.parseInt(verificationCode.getText().toString()));
-                    verification.setVerificationCode(Integer.parseInt(verificationCode.getText().toString()));
-                    verification.setStatus(1);
-                     verify(verification);
-                }
-                else {
-                    errorMessage.setText("Invalid Verification");
-                }
-            }
-        });
-
-        resendSmsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showProgress("Resend Verification..");
-                verification.setStatus(4);
-                verificationViewModel.resendSms(verification,getApplicationContext());
-            }
-        });
-    }
-
-
-    private void showProgress(String message){
-
-        nDialog.setMessage(message);
-        nDialog.setIndeterminate(false);
-        nDialog.setCancelable(false);
-        nDialog.show();
-    }
-
-    private void verify(Verification verification)  {
-        showProgress("Verifying..");
-        verificationViewModel.verifyNumber(verification,getApplicationContext());
-    }
-
-    private void verificationSuccessFul(){
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences(getApplicationContext().getPackageName(), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor= preferences.edit();
-        editor.putString("JWT_TOKEN",verification.getJwtToken());
-        editor.putString("USER_ID",verification.getUserId());
-        editor.apply();
-
-        String appPackageName =getApplicationContext().getPackageName();
-        System.out.println("______________________________________="+appPackageName);
-        Intent mainIntent= getApplicationContext().getPackageManager().getLaunchIntentForPackage(appPackageName);
-        if(mainIntent != null) {
-            startActivity(mainIntent);
-            finish();
-        }else {
-            Toast.makeText(this,"Whoops no application launcher activity found",Toast.LENGTH_SHORT).show();
-        }
-
-    }
 
 }

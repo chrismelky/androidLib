@@ -5,61 +5,88 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 
+import com.softalanta.wapi.registration.data.CountryCodeService;
+import com.softalanta.wapi.registration.data.RegistrationService;
 import com.softalanta.wapi.registration.model.Country;
 import com.softalanta.wapi.registration.model.Registration;
+import com.softalanta.wapi.registration.model.Response;
 
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by chris on 2/8/18.
  * View Model Class to hold registrationMutableLiveData states data for registrationMutableLiveData Activity to persist across configuration change;
  */
 
-public class RegistrationViewModel extends ViewModel implements Registration.RegistrationCallback,Country.CountriesCallbacks {
+public class RegistrationViewModel extends ViewModel {
 
-    /**
-     * List of countries with caller codes
-     */
-    private MutableLiveData<List<Country>> countries;
+    private RegistrationService registrationService;
 
-    private MutableLiveData<Registration> registrationMutableLiveData;
+    private Disposable disposable;
 
-    /**
-     *
-     * @return List of countries with codes
-     */
-    public  LiveData<List<Country>> getCountries(Context context){
-        if(countries ==null){
-            countries = new MutableLiveData<>();
-            Country.getCountries(this,context);
-        }
-        return  countries;
+    private MutableLiveData<Country> defaultCountry = new MutableLiveData<>();
+
+    public RegistrationViewModel(){
+        this.registrationService = RegistrationService.getInstance();
     }
 
-    public void register(Registration registration,Context context){
-        registrationMutableLiveData.setValue(registration);
-        Registration.register(registration,this,context);
-    }
+    public LiveData<Country> getDefaultCountry(Context context){
 
-    public LiveData<Registration> getRegistrationMutableLiveData(){
-        if(registrationMutableLiveData == null){
-            registrationMutableLiveData = new MutableLiveData<>();
-            registrationMutableLiveData.setValue(new Registration());
-        }
+        CountryCodeService countryCodeService = CountryCodeService.getInstance(context);
+        disposable = countryCodeService.getDefaultCountry(context).
+                    subscribeOn(Schedulers.computation()).
+                    observeOn(AndroidSchedulers.mainThread()).
+                    subscribeWith(new DisposableObserver<Country>() {
+                        @Override
+                        public void onNext(Country country) {
+                           defaultCountry.setValue(country);
+                        }
 
-        return registrationMutableLiveData;
+                        @Override
+                        public void onError(Throwable e) {
+                          e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+
+        return defaultCountry;
     }
 
     @Override
-    public void onRegistrationResponse(Registration registration) {
-          registrationMutableLiveData.setValue(registration);
+    protected void onCleared() {
+        disposable.dispose();
+        super.onCleared();
     }
 
-    @Override
-    public void onGetCountries(List<Country> _countries) {
-       countries.setValue(_countries);
+    public void register(String url,Registration registration) {
+         Disposable reg = registrationService.register(url,registration).
+                         subscribeOn(Schedulers.io()).
+                         observeOn(AndroidSchedulers.mainThread()).
+                         subscribeWith(new DisposableObserver<Response>(){
+
+                             @Override
+                             public void onNext(Response response) {
+                                 System.out.println(response.getSuccessMessage());
+                             }
+
+                             @Override
+                             public void onError(Throwable e) {
+                                e.printStackTrace();
+                             }
+
+                             @Override
+                             public void onComplete() {
+
+                             }
+                         });
     }
-
-
 }

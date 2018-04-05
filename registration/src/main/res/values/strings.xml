@@ -22,4 +22,7 @@
     <string name="invalid_verification_code">Invalid Verification Code</string>
     <string name="enter_6_digit_code">Enter 6-digit code</string>
     <string name="no_main_intent">Whoops no application launcher activity found</string>
+    <string name="title_activity_country_code">CountryCodeActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="search_hint">Search Contry</string>
 </resources>
