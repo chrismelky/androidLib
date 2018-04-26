@@ -21,7 +21,7 @@ public class RegistrationService {
     private static RegistrationService mInstance;
 
 
-     RegistrationService(Retrofit retrofit){
+    RegistrationService(Retrofit retrofit){
         registrationApi = retrofit.create(RegistrationApi.class);
     }
 

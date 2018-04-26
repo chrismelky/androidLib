@@ -18,6 +18,17 @@ allprojects {
         google()
         jcenter()
     }
+    ext {
+        supportLibraryVersion = '27.1.0'
+        lifecycleLibraryVersion = '1.1.0'
+        persistenceLibraryVersion = '1.0.0'
+        rxjavaLibraryVersion = '2.1.9'
+        rxAndroidLibraryVersion = '2.0.2'
+        retrofitLibraryVersion = '2.4.0'
+        okhttpLibraryVersion = '3.10.0'
+        okhttpLibraryVersion = '3.10.0'
+        butterknifeLibraryVersion = '8.8.1'
+    }
 }
 
 task clean(type: Delete) {

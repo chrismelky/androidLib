@@ -1,5 +1,9 @@
 package com.softalanta.wapi.registration.model;
 
+import java.net.SocketTimeoutException;
+
+import retrofit2.HttpException;
+
 /**
  * Created by chris on 4/4/18.
  */
@@ -13,6 +17,18 @@ public class Response {
     private String message;
 
     private String successMessage;
+
+    public Response(Throwable e){
+        String errorMessage= "Unknown Error";
+        if(e instanceof SocketTimeoutException){
+            errorMessage = "Could not connect to server";
+        }
+        else if(e instanceof HttpException){
+           errorMessage = e.getMessage();
+        }
+        this.statusCode = 500;
+        this.error = errorMessage;
+    }
 
     public int getStatusCode() {
         return statusCode;

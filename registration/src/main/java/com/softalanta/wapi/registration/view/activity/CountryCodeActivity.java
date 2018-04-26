@@ -156,7 +156,9 @@ public class CountryCodeActivity extends AppCompatActivity {
     public void onBackPressed() {
         if(!searchView.isIconified()){
             searchView.setIconified(true);
+            return;
+        }else {
+            super.onBackPressed();
         }
-        super.onBackPressed();
     }
 }

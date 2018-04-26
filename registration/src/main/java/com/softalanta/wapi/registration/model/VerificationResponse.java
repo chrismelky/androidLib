@@ -10,6 +10,10 @@ public class VerificationResponse extends Response {
 
     private String userId;
 
+    public VerificationResponse(Throwable e) {
+        super(e);
+    }
+
     public String getToken() {
         return token;
     }

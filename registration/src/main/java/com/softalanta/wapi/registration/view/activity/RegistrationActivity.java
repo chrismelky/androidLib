@@ -13,6 +13,7 @@ import android.text.Editable;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -21,7 +22,9 @@ import com.softalanta.wapi.registration.R;
 import com.softalanta.wapi.registration.R2;
 import com.softalanta.wapi.registration.model.Country;
 import com.softalanta.wapi.registration.model.Registration;
+import com.softalanta.wapi.registration.model.Response;
 import com.softalanta.wapi.registration.util.PhoneNumberTextWatcher;
+import com.softalanta.wapi.registration.view.dialog.Progress;
 import com.softalanta.wapi.registration.view.viewmodel.RegistrationViewModel;
 
 import java.util.ArrayList;
@@ -56,13 +59,21 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private String verificationUrl;
 
+    private String resendSmsUrl;
+
     private Observer<Country> defaultCountryObserver;
+
+    private Observer<Response> registrationResponseObserver;
 
     private PhoneNumberUtil phoneUtil;
 
     private Boolean firstAttempt = true;
 
     private List<PhoneNumberTextWatcher> addedTextWatchers = new ArrayList<>();
+
+    private Progress progress;
+
+    private Registration registration;
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -73,6 +84,7 @@ public class RegistrationActivity extends AppCompatActivity {
         Intent intent = getIntent();
         registrationUrl = intent.getStringExtra("REGISTRATION_URL");
         verificationUrl = intent.getStringExtra("VERIFICATION_URL");
+        resendSmsUrl = intent.getStringExtra("RESEND_SMS_URL");
 
         // Hide action bar
         ActionBar actionBar = getSupportActionBar();
@@ -98,6 +110,33 @@ public class RegistrationActivity extends AppCompatActivity {
                 }
             }
         };
+
+        registrationResponseObserver = new Observer<Response>() {
+            @Override
+            public void onChanged(@Nullable Response response) {
+                onRegistrationResponse(response);
+            }
+        };
+
+    }
+
+    private void onRegistrationResponse(Response response){
+        if(response != null){
+            progress.dismiss();
+            if(response.getError() != null){
+                //Show Error
+                Toast.makeText(this,response.getError(),Toast.LENGTH_SHORT).show();
+            }
+            else {
+                //start verification
+                startVerification();
+            }
+        }
+    }
+
+    private void showProgress(){
+        progress = new Progress(this);
+        progress.defaultProgress(getString(R.string.loading));
     }
 
     private void selectedCountryChanged(){
@@ -140,27 +179,6 @@ public class RegistrationActivity extends AppCompatActivity {
        startActivityForResult(countryCodeActivity,1);
     }
 
-    public void confirmRegistration(final String fullNumber){
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
-        builder.setMessage("Are you sure you want to register ");
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                registrationViewModel.register(registrationUrl,new Registration(fullNumber));
-            }
-        });
-        /* register handler to cancel confirm dialogue */
-        builder.setNegativeButton(R.string.edit, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
     @OnClick(R2.id.register_btn)
     public void register() {
         firstAttempt = false;
@@ -186,6 +204,38 @@ public class RegistrationActivity extends AppCompatActivity {
                 errorMessage.setText(getText(R.string.invalid_number));
             }
         }
+    }
+    public void confirmRegistration(final String fullNumber){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+        builder.setMessage("Are you sure you want to register ");
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                showProgress();
+                registration = new Registration(fullNumber);
+                registrationViewModel.register(registrationUrl,registration).observe(RegistrationActivity.this, registrationResponseObserver);
+            }
+        });
+        /* register handler to cancel confirm dialogue */
+        builder.setNegativeButton(R.string.edit, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
+    private void startVerification(){
+        Intent verificationIntent = new Intent(this,VerificationActivity.class);
+        verificationIntent.putExtra("PHONE_NUMBER",registration.getMobileNumber());
+        verificationIntent.putExtra("VERIFICATION_URL",verificationUrl);
+        verificationIntent.putExtra("RESEND_SMS_URL",resendSmsUrl);
+        startActivity(verificationIntent);
+        finish();
     }
 
     @Override

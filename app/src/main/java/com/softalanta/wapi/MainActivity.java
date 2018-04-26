@@ -20,10 +20,10 @@ public class MainActivity extends AppCompatActivity {
         String phoneNumber = preferences.getString("PHONE_NUMBER",null);
         if(phoneNumber == null) {
             Intent registrationIntent = new Intent(this, RegistrationActivity.class);
-            registrationIntent.putExtra("REGISTRATION_URL", "http://192.168.43.201:4000/users");
+            registrationIntent.putExtra("REGISTRATION_URL", "http://192.168.42.182:4000/users");
             registrationIntent.putExtra("SMS_VERIFICATION", true);
-            registrationIntent.putExtra("VERIFICATION_POST_URL", "http://192.168.43.201:4000/users/verify");
-            registrationIntent.putExtra("RESEND_SMS_GET_URL", "http://192.168.43.201:4000/users/resend-verification-pin");
+            registrationIntent.putExtra("VERIFICATION_URL", "http://192.168.42.182:4000/users/verify");
+            registrationIntent.putExtra("RESEND_SMS_URL", "http://192.168.42.182:4000/users/resend-verification-code");
             startActivity(registrationIntent);
             finish();
         }

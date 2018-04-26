@@ -107,5 +107,4 @@
         android:layout_marginTop="@dimen/wapi_element_margin"
         android:layout_below="@+id/register_btn"/>
 
-
 </RelativeLayout>
